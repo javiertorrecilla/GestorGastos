@@ -5,5 +5,24 @@
     <string name="description">Descripción</string>
     <string name="save">Guardar</string>
     <string name="expense_saved">Gasto guardado correctamente</string>
-    <string name="title">Lista de gastos personales</string>
+    <string name="app_title">Lista de gastos personales</string>
+    <string name="title">Titulo</string>
+    <string name="date">Fecha</string>
+    <string name="category">Categoria</string>
+
+    <string-array name="categories">
+        <item>Todas</item>
+        <item>Comida</item>
+        <item>Transporte</item>
+        <item>Ocio</item>
+        <item>Vivienda</item>
+        <item>Otros</item>
+    </string-array>
+
+    <string-array name="sort_options">
+        <item>Más recientes</item>
+        <item>Más antiguos</item>
+        <item>Más caros</item>
+        <item>Más baratos</item>
+    </string-array>
 </resources>

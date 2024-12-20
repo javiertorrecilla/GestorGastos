@@ -5,6 +5,26 @@
     <string name="description">Description</string>
     <string name="save">Save</string>
     <string name="expense_saved">Expense saved successfully</string>
-    <string name="title">Personal expenses list</string>
+    <string name="app_title">Personal expenses list</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="category">Category</string>
+
+    <string-array name="categories">
+        <item>All</item>
+        <item>Food</item>
+        <item>Transport</item>
+        <item>Fun</item>
+        <item>Home</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="sort_options">
+        <item>Most recent</item>
+        <item>Oldest</item>
+        <item>Most expensive</item>
+        <item>Cheapest</item>
+    </string-array>
+
 </resources>
 

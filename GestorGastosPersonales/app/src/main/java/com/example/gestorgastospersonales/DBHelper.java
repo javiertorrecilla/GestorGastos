@@ -15,16 +15,8 @@ public class DBHelper {
 
     public DBHelper(Context context) {
         try {
-            // Abre o crea la base de datos
             db = context.openOrCreateDatabase("expenses_db", Context.MODE_PRIVATE, null);
-            Log.d("DBHelper", "Base de datos abierta o creada exitosamente.");
-
-            // Crea la tabla si no existe
-            db.execSQL("CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, concept TEXT, date TEXT, amount REAL)");
-            Log.d("DBHelper", "Tabla 'expenses' asegurada.");
-
-            // Eliminamos la parte de inserción de datos predeterminados
-            // Ahora la base de datos se inicializa vacía sin valores por defecto
+            db.execSQL("CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, concept TEXT, date TEXT, amount REAL, category TEXT)");
         } catch (Exception e) {
             Log.e("DBHelper", "Error al crear o abrir la base de datos: ", e);
         }
@@ -44,8 +36,8 @@ public class DBHelper {
                         String concept = cursor.getString(cursor.getColumnIndex("concept"));
                         String date = cursor.getString(cursor.getColumnIndex("date"));
                         double amount = cursor.getDouble(cursor.getColumnIndex("amount"));
-                        expenses.add(new Expense(id, title, concept, date, amount));
-                        Log.d("DBHelper", "Gasto recuperado: " + title);
+                        String category = cursor.getString(cursor.getColumnIndex("category"));
+                        expenses.add(new Expense(id, title, concept, date, amount, category));
                     } while (cursor.moveToNext());
                 }
             } catch (Exception e) {
@@ -59,7 +51,6 @@ public class DBHelper {
         return expenses;
     }
 
-    // Método para agregar un nuevo gasto
     public void addExpense(Expense expense) {
         if (db != null) {
             ContentValues values = new ContentValues();
@@ -67,9 +58,8 @@ public class DBHelper {
             values.put("concept", expense.getConcept());
             values.put("date", expense.getDate());
             values.put("amount", expense.getAmount());
+            values.put("category", expense.getCategory());
             db.insert("expenses", null, values);
-            Log.d("DBHelper", "Gasto agregado: " + expense.getTitle());
         }
     }
 }
-

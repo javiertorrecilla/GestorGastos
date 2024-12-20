@@ -2,27 +2,28 @@ package com.example.gestorgastospersonales;
 
 public class Expense {
 
-    private int id; // ID del gasto
-    private String title; // Título del gasto
-    private String concept; // Concepto del gasto
-    private String date; // Fecha del gasto
-    private double amount; // Cantidad del gasto
+    private int id;
+    private String title;
+    private String concept;
+    private String date;
+    private double amount;
+    private String category;
 
-    // Constructor para crear un nuevo gasto (sin id)
-    public Expense(String title, String concept, String date, double amount) {
+    public Expense(String title, String concept, String date, double amount, String category) {
         this.title = title;
         this.concept = concept;
         this.date = date;
         this.amount = amount;
+        this.category = category;
     }
 
-    // Constructor cuando se obtiene un gasto de la base de datos (con id)
-    public Expense(int id, String title, String concept, String date, double amount) {
+    public Expense(int id, String title, String concept, String date, double amount, String category) {
         this.id = id;
         this.title = title;
         this.concept = concept;
         this.date = date;
         this.amount = amount;
+        this.category = category;
     }
 
     // Getters
@@ -46,6 +47,10 @@ public class Expense {
         return amount;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     // Setters
     public void setId(int id) {
         this.id = id;
@@ -65,5 +70,19 @@ public class Expense {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public static final String CATEGORY_FOOD = "Comida";
+    public static final String CATEGORY_TRANSPORT = "Transporte";
+    public static final String CATEGORY_UTILITY = "Servicios";
+    public static final String CATEGORY_ENTERTAINMENT = "Entretenimiento";
+    public static final String CATEGORY_OTHER = "Otros";
+
+    public static String[] getCategories() {
+        return new String[] {CATEGORY_FOOD, CATEGORY_TRANSPORT, CATEGORY_UTILITY, CATEGORY_ENTERTAINMENT, CATEGORY_OTHER};
     }
 }

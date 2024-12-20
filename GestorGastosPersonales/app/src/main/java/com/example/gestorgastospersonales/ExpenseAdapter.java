@@ -41,19 +41,19 @@ public class ExpenseAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_expense, parent, false);
         }
 
-        // Obtener el gasto en la posición actual
         Expense expense = expenseList.get(position);
 
-        // Enlazar los elementos de la vista con los datos
         TextView titleTextView = convertView.findViewById(R.id.titleTextView);
         TextView conceptTextView = convertView.findViewById(R.id.conceptTextView);
         TextView dateTextView = convertView.findViewById(R.id.dateTextView);
         TextView amountTextView = convertView.findViewById(R.id.amountTextView);
+        TextView categoryTextView = convertView.findViewById(R.id.categoryTextView);
 
         titleTextView.setText(expense.getTitle());
         conceptTextView.setText(expense.getConcept());
         dateTextView.setText(expense.getDate());
-        amountTextView.setText(String.format("$%.2f", expense.getAmount())); // Formato de cantidad
+        amountTextView.setText(String.format("$%.2f", expense.getAmount()));
+        categoryTextView.setText(expense.getCategory());
 
         return convertView;
     }
