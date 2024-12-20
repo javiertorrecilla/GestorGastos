@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Expense Manager</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="expense_saved">Expense saved successfully</string>
+    <string name="title">Personal expenses list</string>
+</resources>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Definir colores principales -->
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Colores de fondo y texto -->
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+
+    <!-- Colores de botones -->
+    <color name="buttonColor">#4CAF50</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+</resources>
