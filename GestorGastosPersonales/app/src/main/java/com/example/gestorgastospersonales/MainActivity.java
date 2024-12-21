@@ -11,11 +11,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addExpenseButton;
     private ExpenseAdapter adapter;
     private EditText searchEditText;
-    private Spinner categorySpinner, sortSpinner;
+    private Spinner categorySpinner, sortSpinner, timeSpinner;
     private List<Gasto> expenseList;
     private List<Gasto> filteredList;
 
@@ -38,19 +42,18 @@ public class MainActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         categorySpinner = findViewById(R.id.categorySpinner);
         sortSpinner = findViewById(R.id.sortSpinner);
+        timeSpinner = findViewById(R.id.timeSpinner); // Nuevo Spinner
 
-        // Obtener los gastos de la base de datos
         GastoDbHelper dbHelper = new GastoDbHelper(this);
         dbHelper.borrarDatos();
         dbHelper.initGastos(this);
         expenseList = dbHelper.obtenerGastos();
         filteredList = new ArrayList<>(expenseList);
 
-        // Adaptador para la lista de gastos
         adapter = new ExpenseAdapter(this, filteredList);
         listView.setAdapter(adapter);
 
-        // Filtro de búsqueda
+        // Configurar búsqueda por texto
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {}
         });
 
-        // Configurar el Spinner de categorías
+        // Configurar Spinner de categorías
         ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.categories, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
-        // Configurar el Spinner de ordenación
+        // Configurar Spinner de ordenación
         ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(this,
                 R.array.sort_options, android.R.layout.simple_spinner_item);
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,16 +98,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
+
+        // Configurar Spinner de tiempo
+        ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.time_options, android.R.layout.simple_spinner_item);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeSpinner.setAdapter(timeAdapter);
+
+        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
+                updateFilteredList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
     }
 
     private void updateFilteredList() {
         String searchQuery = searchEditText.getText().toString().toLowerCase().trim();
         String selectedCategory = categorySpinner.getSelectedItem().toString();
         String selectedSortOption = sortSpinner.getSelectedItem().toString();
+        String selectedTimeOption = timeSpinner.getSelectedItem().toString();
 
         filteredList.clear();
 
-        // Filtrar por búsqueda y categoría
+        // Obtener fechas actuales y límite
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        calendar.add(Calendar.DATE, -1);
+        Date yesterday = calendar.getTime();
+        calendar.add(Calendar.DATE, -6);
+        Date lastWeek = calendar.getTime();
+        calendar.add(Calendar.DATE, -23); // Ya restamos 7, sumamos 23 más
+        Date lastMonth = calendar.getTime();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         for (Gasto expense : expenseList) {
             boolean matchesSearch = expense.getDescripcion().toLowerCase().contains(searchQuery) ||
                     expense.getLugar().toLowerCase().contains(searchQuery);
@@ -112,17 +143,35 @@ public class MainActivity extends AppCompatActivity {
             boolean matchesCategory = selectedCategory.equals("Todas") ||
                     expense.getCategoria().equalsIgnoreCase(selectedCategory);
 
-            if (matchesSearch && matchesCategory) {
+            boolean matchesTime = true; // Default is true (if "Todos" is selected)
+            try {
+                Date expenseDate = dateFormat.parse(expense.getFecha());
+                switch (selectedTimeOption) {
+                    case "Hoy":
+                        matchesTime = dateFormat.format(expenseDate).equals(dateFormat.format(today));
+                        break;
+                    case "Ayer":
+                        matchesTime = dateFormat.format(expenseDate).equals(dateFormat.format(yesterday));
+                        break;
+                    case "Última Semana":
+                        matchesTime = expenseDate.after(lastWeek) && !expenseDate.after(today);
+                        break;
+                    case "Último Mes":
+                        matchesTime = expenseDate.after(lastMonth) && !expenseDate.after(today);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (matchesSearch && matchesCategory && matchesTime) {
                 filteredList.add(expense);
             }
         }
 
-        // Ordenar según la opción seleccionada
         switch (selectedSortOption) {
             case "Más recientes":
-                Collections.sort(filteredList, (o1, o2) -> {
-                    return o2.getFecha().compareTo(o1.getFecha()); // Ordenar por fecha (descendente)
-                });
+                Collections.sort(filteredList, (o1, o2) -> o2.getFecha().compareTo(o1.getFecha()));
                 break;
 
             case "Más antiguos":
@@ -130,9 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case "Más caros":
-                Collections.sort(filteredList, (o1, o2) -> {
-                    return Double.compare(o2.getCantidad(), o1.getCantidad()); // Ordenar por cantidad (descendente)
-                });
+                Collections.sort(filteredList, (o1, o2) -> Double.compare(o2.getCantidad(), o1.getCantidad()));
                 break;
 
             case "Más baratos":
@@ -140,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        // Notificar al adaptador para que se actualice la lista
         adapter.notifyDataSetChanged();
     }
 }

@@ -10,6 +10,7 @@
     <string name="date">Date</string>
     <string name="category">Category</string>
     <string name="search">Find by title</string>
+    <string name="delete">Delete</string>
 
     <string-array name="categories">
         <item>All</item>

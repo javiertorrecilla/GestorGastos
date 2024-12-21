@@ -10,6 +10,7 @@
     <string name="date">Fecha</string>
     <string name="category">Categoria</string>
     <string name="search">Buscar por título</string>
+    <string name="delete">Eliminar</string>
 
     <string-array name="categories">
         <item>Todas</item>
@@ -25,5 +26,13 @@
         <item>Más antiguos</item>
         <item>Más caros</item>
         <item>Más baratos</item>
+    </string-array>
+
+    <string-array name="time_options">
+        <item>Todos</item>
+        <item>Hoy</item>
+        <item>Ayer</item>
+        <item>Última Semana</item>
+        <item>Último Mes</item>
     </string-array>
 </resources>

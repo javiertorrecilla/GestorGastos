@@ -113,4 +113,16 @@ public class GastoDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void eliminarGasto(Gasto gasto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Usa el id del gasto para eliminarlo
+        db.delete(GastoContract.GastoEntry.TABLE_NAME,
+                GastoContract.GastoEntry._ID + " = ?",
+                new String[]{String.valueOf(gasto.getId())});
+        db.close();
+    }
+
+
+
 }
