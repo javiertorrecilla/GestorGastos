@@ -12,9 +12,9 @@ import java.util.List;
 public class ExpenseAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Expense> expenseList;
+    private List<Gasto> expenseList;
 
-    public ExpenseAdapter(Context context, List<Expense> expenseList) {
+    public ExpenseAdapter(Context context, List<Gasto> expenseList) {
         this.context = context;
         this.expenseList = expenseList;
     }
@@ -41,19 +41,19 @@ public class ExpenseAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_expense, parent, false);
         }
 
-        Expense expense = expenseList.get(position);
+        Gasto expense = expenseList.get(position);
 
         TextView titleTextView = convertView.findViewById(R.id.titleTextView);
-        TextView conceptTextView = convertView.findViewById(R.id.conceptTextView);
+        TextView conceptTextView = convertView.findViewById(R.id.descriptionTextView);
         TextView dateTextView = convertView.findViewById(R.id.dateTextView);
         TextView amountTextView = convertView.findViewById(R.id.amountTextView);
         TextView categoryTextView = convertView.findViewById(R.id.categoryTextView);
 
-        titleTextView.setText(expense.getTitle());
-        conceptTextView.setText(expense.getConcept());
-        dateTextView.setText(expense.getDate());
-        amountTextView.setText(String.format("$%.2f", expense.getAmount()));
-        categoryTextView.setText(expense.getCategory());
+        titleTextView.setText(expense.getLugar());
+        conceptTextView.setText(expense.getDescripcion());
+        dateTextView.setText(expense.getFecha());
+        amountTextView.setText(String.format("$%.2f", expense.getCantidad()));
+        categoryTextView.setText(expense.getCategoria());
 
         return convertView;
     }

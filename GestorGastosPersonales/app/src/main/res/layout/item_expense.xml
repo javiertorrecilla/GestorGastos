@@ -1,54 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp">
 
-    <!-- Título del gasto -->
+    <!-- Información del Gasto -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:text="Lugar"
+        android:textStyle="bold"/>
 
-    <!-- Concepto del gasto -->
     <TextView
-        android:id="@+id/conceptTextView"
+        android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/description"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:text="Descripción"/>
 
-    <!-- Fecha del gasto -->
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/date"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:text="Fecha"/>
 
-    <!-- Monto del gasto -->
     <TextView
         android:id="@+id/amountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/amount"
-        android:textSize="16sp"
-        android:textColor="@android:color/holo_green_dark"
-        android:layout_marginTop="4dp" />
+        android:text="Cantidad"/>
 
-    <!-- Categoría del gasto -->
     <TextView
         android:id="@+id/categoryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/category"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:text="Categoría"/>
+
 
 </LinearLayout>
