@@ -1,5 +1,6 @@
 package com.example.gestorgastospersonales;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,25 +22,36 @@ public class AddExpenseActivity extends AppCompatActivity {
     private Spinner categoriaSpinner;
     private Button guardarButton, cancelarButton;
 
+    private TextView fechaSeleccionadaTextView;
+    private Button abrirCalendarioButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expense);
 
         // Inicializar vistas
-        fechaEditText = findViewById(R.id.fechaEditText);
         lugarEditText = findViewById(R.id.lugarEditText);
         descripcionEditText = findViewById(R.id.descripcionEditText);
         cantidadEditText = findViewById(R.id.cantidadEditText);
         categoriaSpinner = findViewById(R.id.categoriaSpinner);
         guardarButton = findViewById(R.id.guardarButton);
         cancelarButton = findViewById(R.id.cancelarButton);
+        fechaSeleccionadaTextView = findViewById(R.id.fechaSeleccionadaTextView);
+        abrirCalendarioButton = findViewById(R.id.abrirCalendarioButton);
 
         // Configurar spinner de categorías
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categoriaSpinner.setAdapter(adapter);
+
+        abrirCalendarioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarCalendario();
+            }
+        });
 
         // Configurar botón Guardar
         guardarButton.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +70,26 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
     }
 
+    private void mostrarCalendario() {
+        // Obtiene la fecha actual
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Muestra el selector de fecha
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+            // Actualiza el TextView con la fecha seleccionada
+            String fechaSeleccionada = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+            fechaSeleccionadaTextView.setText(fechaSeleccionada);
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
     private void agregarGasto() {
         // Obtener datos del formulario
-        String fecha = fechaEditText.getText().toString().trim();
+        String fecha = fechaSeleccionadaTextView.getText().toString().trim();
         String lugar = lugarEditText.getText().toString().trim();
         String descripcion = descripcionEditText.getText().toString().trim();
         String categoria = categoriaSpinner.getSelectedItem().toString();

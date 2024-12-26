@@ -5,30 +5,64 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/fechaEditText"
+    <!-- Título de la pantalla -->
+    <TextView
+        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha (YYYY-MM-DD)"
-        android:inputType="date" />
+        android:text="Añadir Gasto"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Selector de Fecha -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/fechaSeleccionadaTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Selecciona una fecha"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/abrirCalendarioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calendario" />
+    </LinearLayout>
+
+    <!-- Lugar -->
     <EditText
         android:id="@+id/lugarEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Lugar" />
 
+    <!-- Descripción -->
     <EditText
         android:id="@+id/descripcionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Descripción" />
 
+    <!-- Categoría -->
     <Spinner
         android:id="@+id/categoriaSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!-- Cantidad -->
     <EditText
         android:id="@+id/cantidadEditText"
         android:layout_width="match_parent"
@@ -36,6 +70,7 @@
         android:hint="Cantidad"
         android:inputType="numberDecimal" />
 
+    <!-- Botones de acción -->
     <Button
         android:id="@+id/guardarButton"
         android:layout_width="match_parent"
