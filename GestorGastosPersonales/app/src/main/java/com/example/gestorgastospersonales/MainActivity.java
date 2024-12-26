@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         categorySpinner = findViewById(R.id.categorySpinner);
         sortSpinner = findViewById(R.id.sortSpinner);
-        timeSpinner = findViewById(R.id.timeSpinner);
+        timeSpinner = findViewById(R.id.timeSpinner); // Nuevo Spinner
 
         GastoDbHelper dbHelper = new GastoDbHelper(this);
         expenseList = dbHelper.obtenerGastos();
@@ -56,15 +56,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddExpenseActivity.class);
                 startActivityForResult(intent, 1);
-            }
-        });
-
-        // Configurar clic en ítems de la lista para abrir detalles
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Gasto selectedExpense = filteredList.get(position);
-                abrirDetalleGasto(selectedExpense.getId());  // Llama al método para abrir los detalles
             }
         });
 
@@ -129,13 +120,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
-    }
-
-    // Método para abrir los detalles del gasto
-    private void abrirDetalleGasto(int gastoId) {
-        Intent intent = new Intent(MainActivity.this, ExpenseDetailActivity.class);
-        intent.putExtra("id", gastoId);  // Pasamos el id del gasto a la actividad de detalles
-        startActivity(intent);
     }
 
     private void updateFilteredList() {

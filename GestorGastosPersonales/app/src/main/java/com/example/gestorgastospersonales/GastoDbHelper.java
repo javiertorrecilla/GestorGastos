@@ -123,27 +123,6 @@ public class GastoDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Gasto obtenerGastoPorId(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(GastoContract.GastoEntry.TABLE_NAME, null,
-                GastoContract.GastoEntry._ID + " = ?",
-                new String[]{String.valueOf(id)}, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
-            Gasto gasto = new Gasto(
-                    cursor.getInt(cursor.getColumnIndex(GastoContract.GastoEntry._ID)),
-                    cursor.getString(cursor.getColumnIndex(GastoContract.GastoEntry.COLUMN_NAME_FECHA)),
-                    cursor.getString(cursor.getColumnIndex(GastoContract.GastoEntry.COLUMN_NAME_LUGAR)),
-                    cursor.getString(cursor.getColumnIndex(GastoContract.GastoEntry.COLUMN_NAME_DESCRIPCION)),
-                    cursor.getString(cursor.getColumnIndex(GastoContract.GastoEntry.COLUMN_NAME_CATEGORIA)),
-                    cursor.getDouble(cursor.getColumnIndex(GastoContract.GastoEntry.COLUMN_NAME_CANTIDAD))
-            );
-            cursor.close();
-            return gasto;
-        } else {
-            return null;
-        }
-    }
 
 }

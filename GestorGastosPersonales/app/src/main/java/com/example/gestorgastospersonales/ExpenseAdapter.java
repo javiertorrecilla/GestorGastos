@@ -1,7 +1,6 @@
 package com.example.gestorgastospersonales;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +59,6 @@ public class ExpenseAdapter extends BaseAdapter {
         amountTextView.setText(String.format("€%.2f", expense.getCantidad()));
         categoryTextView.setText(expense.getCategoria());
 
-        // Clic en el elemento para abrir la actividad de detalles
-        convertView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ExpenseDetailActivity.class);
-            intent.putExtra("id", expense.getId());  // Pasa el ID del gasto
-            context.startActivity(intent);
-        });
-
         // Botón de eliminar
         Button deleteButton = convertView.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(v -> {
@@ -91,5 +83,4 @@ public class ExpenseAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }
