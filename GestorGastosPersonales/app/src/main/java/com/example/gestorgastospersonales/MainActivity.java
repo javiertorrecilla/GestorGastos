@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         timeSpinner = findViewById(R.id.timeSpinner); // Nuevo Spinner
 
         GastoDbHelper dbHelper = new GastoDbHelper(this);
-        dbHelper.borrarDatos();
-        dbHelper.initGastos(this);
         expenseList = dbHelper.obtenerGastos();
         filteredList = new ArrayList<>(expenseList);
 
