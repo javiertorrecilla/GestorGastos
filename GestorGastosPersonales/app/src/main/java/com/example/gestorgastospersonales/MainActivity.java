@@ -53,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ExpenseAdapter(this, filteredList);
         listView.setAdapter(adapter);
 
+        addExpenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddExpenseActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         // Configurar búsqueda por texto
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -188,5 +196,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Actualizar lista después de añadir un gasto
+            GastoDbHelper dbHelper = new GastoDbHelper(this);
+            expenseList = dbHelper.obtenerGastos();
+            filteredList.clear();
+            filteredList.addAll(expenseList);
+            adapter.notifyDataSetChanged();
+        }
     }
 }
