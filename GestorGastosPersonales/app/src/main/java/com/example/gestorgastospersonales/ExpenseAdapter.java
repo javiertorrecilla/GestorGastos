@@ -92,7 +92,7 @@ public class ExpenseAdapter extends BaseAdapter {
             intent.putExtra("fecha", expense.getFecha());
             intent.putExtra("descripcion", expense.getDescripcion());
             intent.putExtra("lugar",expense.getLugar());
-            context.startActivity(intent);
+            ((MainActivity) context).startActivityForResult(intent,EDIT_EXPENSE_REQUEST_CODE);
         });
 
         return convertView;

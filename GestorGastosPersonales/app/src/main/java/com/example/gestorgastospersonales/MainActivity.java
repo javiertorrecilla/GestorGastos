@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private int EDIT_EXPENSE_REQUEST_CODE = 2;
     private ListView listView;
     private Button addExpenseButton;
     private ExpenseAdapter adapter;
@@ -206,6 +206,15 @@ public class MainActivity extends AppCompatActivity {
             filteredList.clear();
             filteredList.addAll(expenseList);
             adapter.notifyDataSetChanged();
+        }else  if (requestCode == EDIT_EXPENSE_REQUEST_CODE  && resultCode == RESULT_OK) {
+            // Actualizar lista después de añadir un gasto
+            GastoDbHelper dbHelper = new GastoDbHelper(this);
+            expenseList = dbHelper.obtenerGastos();
+            filteredList.clear();
+            filteredList.addAll(expenseList);
+            adapter.notifyDataSetChanged();
         }
+
+       updateFilteredList();
     }
 }
