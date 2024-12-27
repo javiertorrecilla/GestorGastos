@@ -1,0 +1,103 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título de la pantalla -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detalles del Gasto"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Fecha del gasto -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/fechaTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="01-01-2024" />
+
+        <!-- Lugar del gasto -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lugar:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/lugarTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Supermercado" />
+
+        <!-- Descripción del gasto -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/descripcionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Compra de alimentos" />
+
+        <!-- Categoría del gasto -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoría:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/categoriaTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alimentación" />
+
+        <!-- Cantidad del gasto -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantidad:"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/cantidadTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="50.00 €" />
+
+        <!-- Botón para cerrar -->
+        <Button
+            android:id="@+id/cerrarButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerrar"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FF4081" />
+
+    </LinearLayout>
+</ScrollView>

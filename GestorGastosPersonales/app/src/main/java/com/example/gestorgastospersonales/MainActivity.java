@@ -59,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Configurar clic en ítems de la lista para abrir detalles
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Gasto selectedExpense = filteredList.get(position);
+                abrirDetalleGasto(selectedExpense.getId());  // Llama al método para abrir los detalles
+            }
+        });
+
         // Configurar búsqueda por texto
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -217,4 +226,12 @@ public class MainActivity extends AppCompatActivity {
 
        updateFilteredList();
     }
+    // Método para abrir los detalles del gasto
+    private void abrirDetalleGasto(int gastoId) {
+        Intent intent = new Intent(MainActivity.this, ExpenseDetailActivity.class);
+        intent.putExtra("id", gastoId);  // Pasamos el id del gasto a la actividad de detalles
+        startActivity(intent);
+    }
+
+
 }
