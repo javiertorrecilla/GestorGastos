@@ -1,6 +1,7 @@
 package com.example.gestorgastospersonales;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class ExpenseAdapter extends BaseAdapter {
 
+    private int EDIT_EXPENSE_REQUEST_CODE = 2;
     private Context context;
     private List<Gasto> expenseList;
     private GastoDbHelper dbHelper;
@@ -79,6 +81,18 @@ public class ExpenseAdapter extends BaseAdapter {
                     })
                     .setNegativeButton("No", null)
                     .show();
+        });
+        Button editButton = convertView.findViewById(R.id.editButton);
+        // Acción del botón Editar
+        editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditExpenseActivity.class);
+            intent.putExtra("gastoId", expense.getId()); // Pasa el ID del gasto
+            intent.putExtra("cantidad", expense.getCantidad()); // Cambia por los valores reales
+            intent.putExtra("categoria", expense.getCategoria());
+            intent.putExtra("fecha", expense.getFecha());
+            intent.putExtra("descripcion", expense.getDescripcion());
+            intent.putExtra("lugar",expense.getLugar());
+            context.startActivity(intent);
         });
 
         return convertView;

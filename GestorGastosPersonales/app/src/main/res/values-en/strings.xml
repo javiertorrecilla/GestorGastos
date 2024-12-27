@@ -11,8 +11,14 @@
     <string name="category">Category</string>
     <string name="search">Find by title</string>
     <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_date">Select a date</string>
+    <string name="place">Place</string>
+    <string name="cuantity">Cuantity</string>
 
-    <string-array name="categories">
+
+<string-array name="categories">
         <item>All</item>
         <item>Food</item>
         <item>Transport</item>

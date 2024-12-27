@@ -12,15 +12,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AddExpenseActivity extends AppCompatActivity {
+import java.util.Calendar;
+
+public class EditExpenseActivity extends AppCompatActivity {
 
     private EditText lugarEditText, descripcionEditText, cantidadEditText;
     private Spinner categoriaSpinner;
-    private Button guardarButton, cancelarButton;
+    private int gastoId; // ID del gasto a editar
 
     private TextView fechaSeleccionadaTextView;
     private Button abrirCalendarioButton;
@@ -28,24 +29,51 @@ public class AddExpenseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_expense);
+        setContentView(R.layout.activity_edit_expense);
 
         // Inicializar vistas
+        fechaSeleccionadaTextView = findViewById(R.id.fechaSeleccionadaTextView);
+        abrirCalendarioButton = findViewById(R.id.abrirCalendarioButton);
         lugarEditText = findViewById(R.id.lugarEditText);
         descripcionEditText = findViewById(R.id.descripcionEditText);
         cantidadEditText = findViewById(R.id.cantidadEditText);
         categoriaSpinner = findViewById(R.id.categoriaSpinner);
-        guardarButton = findViewById(R.id.guardarButton);
-        cancelarButton = findViewById(R.id.cancelarButton);
-        fechaSeleccionadaTextView = findViewById(R.id.fechaSeleccionadaTextView);
-        abrirCalendarioButton = findViewById(R.id.abrirCalendarioButton);
 
-        // Configurar spinner de categorías
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categoriaSpinner.setAdapter(adapter);
 
+        // Obtener datos del Intent
+        Intent intent = getIntent();
+        gastoId = intent.getIntExtra("gastoId", -1); // ID del gasto a editar
+        String fecha = intent.getStringExtra("fecha");
+        String lugar = intent.getStringExtra("lugar");
+        String descripcion = intent.getStringExtra("descripcion");
+        String categoria = intent.getStringExtra("categoria");
+        double cantidad = intent.getDoubleExtra("cantidad", 0.0);
+
+        int posicion = -1;
+        for (int i = 0; i < categoriaSpinner.getCount(); i++) {
+            if (categoriaSpinner.getItemAtPosition(i).toString().equals(categoria)) {
+                posicion = i;
+                break;
+            }
+        }
+
+        if (posicion >= 0) {
+            categoriaSpinner.setSelection(posicion);
+        } else {
+            Toast.makeText(this, "Categoría no encontrada.", Toast.LENGTH_SHORT).show();
+        }
+
+        // Configurar los campos con los datos actuales del gasto
+        fechaSeleccionadaTextView.setText(fecha);
+        lugarEditText.setText(lugar);
+        descripcionEditText.setText(descripcion);
+        cantidadEditText.setText(String.valueOf(cantidad));
+
+        // Seleccionar categoría (puedes agregar lógica para establecer la categoría actual)
         abrirCalendarioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,21 +81,12 @@ public class AddExpenseActivity extends AppCompatActivity {
             }
         });
 
-        // Configurar botón Guardar
-        guardarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                agregarGasto();
-            }
-        });
+        // Configurar botones
+        Button guardarButton = findViewById(R.id.guardarButton);
+        guardarButton.setOnClickListener(v -> guardarCambios());
 
-        // Configurar botón Cancelar
-        cancelarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // Cerrar actividad
-            }
-        });
+        Button cancelarButton = findViewById(R.id.cancelarButton);
+        cancelarButton.setOnClickListener(v -> finish());
     }
 
     private void mostrarCalendario() {
@@ -87,17 +106,16 @@ public class AddExpenseActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void agregarGasto() {
-        // Obtener datos del formulario
+    private void guardarCambios() {
+        // Obtener los datos modificados
         String fecha = fechaSeleccionadaTextView.getText().toString().trim();
         String lugar = lugarEditText.getText().toString().trim();
         String descripcion = descripcionEditText.getText().toString().trim();
         String categoria = categoriaSpinner.getSelectedItem().toString();
         String cantidadStr = cantidadEditText.getText().toString().trim();
 
-        // Validar entrada
         if (fecha.isEmpty() || lugar.isEmpty() || descripcion.isEmpty() || cantidadStr.isEmpty()) {
-            Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -109,9 +127,8 @@ public class AddExpenseActivity extends AppCompatActivity {
             return;
         }
 
-        // Insertar en la base de datos
+        // Actualizar en la base de datos
         GastoDbHelper dbHelper = new GastoDbHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(GastoContract.GastoEntry.COLUMN_NAME_FECHA, fecha);
@@ -120,14 +137,19 @@ public class AddExpenseActivity extends AppCompatActivity {
         values.put(GastoContract.GastoEntry.COLUMN_NAME_CATEGORIA, categoria);
         values.put(GastoContract.GastoEntry.COLUMN_NAME_CANTIDAD, cantidad);
 
-        long newRowId = db.insert(GastoContract.GastoEntry.TABLE_NAME, null, values);
+        int rowsAffected = dbHelper.getWritableDatabase().update(
+                GastoContract.GastoEntry.TABLE_NAME,
+                values,
+                GastoContract.GastoEntry._ID + "=?",
+                new String[]{String.valueOf(gastoId)}
+        );
 
-        if (newRowId != -1) {
-            Toast.makeText(this, "Gasto añadido correctamente", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK); // Indicar éxito
-            finish(); // Cerrar actividad
+        if (rowsAffected > 0) {
+            Toast.makeText(this, "Gasto actualizado correctamente.", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish(); // Cierra la actividad
         } else {
-            Toast.makeText(this, "Error al añadir gasto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error al actualizar el gasto.", Toast.LENGTH_SHORT).show();
         }
     }
 }
