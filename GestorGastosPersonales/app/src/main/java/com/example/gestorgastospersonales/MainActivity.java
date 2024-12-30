@@ -147,6 +147,12 @@ public class MainActivity extends AppCompatActivity {
         categoryMap.put("Vivienda", getString(R.string.category_home));
         categoryMap.put("Otros", getString(R.string.category_others));
 
+        categoryMap.put("Food", getString(R.string.category_food));
+        categoryMap.put("Transport", getString(R.string.category_transport));
+        categoryMap.put("Fun", getString(R.string.category_fun));
+        categoryMap.put("Home", getString(R.string.category_home));
+        categoryMap.put("Others", getString(R.string.category_others));
+
         filteredList.clear();
 
         // Obtener fechas actuales y límite
