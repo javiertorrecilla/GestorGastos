@@ -16,6 +16,27 @@
     <string name="select_date">Selecciona una fecha</string>
     <string name="place">Lugar</string>
     <string name="cuantity">Cantidad</string>
+    <string name="all_categories">Todas</string>
+    <!-- Categorías -->
+    <string name="category_all">Todas</string>
+    <string name="category_food">Comida</string>
+    <string name="category_transport">Transporte</string>
+    <string name="category_fun">Ocio</string>
+    <string name="category_home">Vivienda</string>
+    <string name="category_others">Otros</string>
+
+    <!-- Opciones de orden -->
+    <string name="sort_recent">Más recientes</string>
+    <string name="sort_oldest">Más antiguos</string>
+    <string name="sort_expensive">Más caros</string>
+    <string name="sort_cheap">Más baratos</string>
+
+    <!-- Opciones de tiempo -->
+    <string name="time_all">Todos</string>
+    <string name="time_today">Hoy</string>
+    <string name="time_yesterday">Ayer</string>
+    <string name="time_last_week">Última Semana</string>
+    <string name="time_last_month">Último Mes</string>
 
     <string-array name="categories">
         <item>Todas</item>

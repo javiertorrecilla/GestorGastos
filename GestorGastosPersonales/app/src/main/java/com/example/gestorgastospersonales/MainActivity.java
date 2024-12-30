@@ -155,25 +155,20 @@ public class MainActivity extends AppCompatActivity {
             boolean matchesSearch = expense.getDescripcion().toLowerCase().contains(searchQuery) ||
                     expense.getLugar().toLowerCase().contains(searchQuery);
 
-            boolean matchesCategory = selectedCategory.equals("Todas") ||
+                    boolean matchesCategory = selectedCategory.equals(getString(R.string.all_categories)) || 
                     expense.getCategoria().equalsIgnoreCase(selectedCategory);
 
             boolean matchesTime = true; // Default is true (if "Todos" is selected)
             try {
                 Date expenseDate = dateFormat.parse(expense.getFecha());
-                switch (selectedTimeOption) {
-                    case "Hoy":
-                        matchesTime = dateFormat.format(expenseDate).equals(dateFormat.format(today));
-                        break;
-                    case "Ayer":
-                        matchesTime = dateFormat.format(expenseDate).equals(dateFormat.format(yesterday));
-                        break;
-                    case "Última Semana":
-                        matchesTime = expenseDate.after(lastWeek) && !expenseDate.after(today);
-                        break;
-                    case "Último Mes":
-                        matchesTime = expenseDate.after(lastMonth) && !expenseDate.after(today);
-                        break;
+                if (selectedTimeOption.equals(getString(R.string.time_today))) {
+                    matchesTime = dateFormat.format(expenseDate).equals(dateFormat.format(today));
+                } else if (selectedTimeOption.equals(getString(R.string.time_yesterday))) {
+                    matchesTime = dateFormat.format(expenseDate).equals(dateFormat.format(yesterday));
+                } else if (selectedTimeOption.equals(getString(R.string.time_last_week))) {
+                    matchesTime = expenseDate.after(lastWeek) && !expenseDate.after(today);
+                } else if (selectedTimeOption.equals(getString(R.string.time_last_month))) {
+                    matchesTime = expenseDate.after(lastMonth) && !expenseDate.after(today);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -183,23 +178,14 @@ public class MainActivity extends AppCompatActivity {
                 filteredList.add(expense);
             }
         }
-
-        switch (selectedSortOption) {
-            case "Más recientes":
-                Collections.sort(filteredList, (o1, o2) -> o2.getFecha().compareTo(o1.getFecha()));
-                break;
-
-            case "Más antiguos":
-                Collections.sort(filteredList, Comparator.comparing(Gasto::getFecha));
-                break;
-
-            case "Más caros":
-                Collections.sort(filteredList, (o1, o2) -> Double.compare(o2.getCantidad(), o1.getCantidad()));
-                break;
-
-            case "Más baratos":
-                Collections.sort(filteredList, Comparator.comparingDouble(Gasto::getCantidad));
-                break;
+        if (selectedSortOption.equals(getString(R.string.sort_recent))) {
+            Collections.sort(filteredList, (o1, o2) -> o2.getFecha().compareTo(o1.getFecha()));
+        } else if (selectedSortOption.equals(getString(R.string.sort_oldest))) {
+            Collections.sort(filteredList, Comparator.comparing(Gasto::getFecha));
+        } else if (selectedSortOption.equals(getString(R.string.sort_expensive))) {
+            Collections.sort(filteredList, (o1, o2) -> Double.compare(o2.getCantidad(), o1.getCantidad()));
+        } else if (selectedSortOption.equals(getString(R.string.sort_cheap))) {
+            Collections.sort(filteredList, Comparator.comparingDouble(Gasto::getCantidad));
         }
 
         adapter.notifyDataSetChanged();
