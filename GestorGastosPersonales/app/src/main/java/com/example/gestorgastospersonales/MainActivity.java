@@ -20,7 +20,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private int EDIT_EXPENSE_REQUEST_CODE = 2;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner categorySpinner, sortSpinner, timeSpinner;
     private List<Gasto> expenseList;
     private List<Gasto> filteredList;
+    private Map<String, String> categoryMap = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
         String selectedSortOption = sortSpinner.getSelectedItem().toString();
         String selectedTimeOption = timeSpinner.getSelectedItem().toString();
 
+        categoryMap.put("Comida", getString(R.string.category_food));
+        categoryMap.put("Transporte", getString(R.string.category_transport));
+        categoryMap.put("Ocio", getString(R.string.category_fun));
+        categoryMap.put("Vivienda", getString(R.string.category_home));
+        categoryMap.put("Otros", getString(R.string.category_others));
+
         filteredList.clear();
 
         // Obtener fechas actuales y límite
@@ -155,10 +165,13 @@ public class MainActivity extends AppCompatActivity {
             boolean matchesSearch = expense.getDescripcion().toLowerCase().contains(searchQuery) ||
                     expense.getLugar().toLowerCase().contains(searchQuery);
 
-                    boolean matchesCategory = selectedCategory.equals(getString(R.string.all_categories)) || 
-                    expense.getCategoria().equalsIgnoreCase(selectedCategory);
+            String categoryInSpanish = categoryMap.get(expense.getCategoria());
+            boolean matchesCategory = selectedCategory.equals(getString(R.string.all_categories)) ||
+                    (categoryInSpanish != null && categoryInSpanish.equalsIgnoreCase(selectedCategory));
+
 
             boolean matchesTime = true; // Default is true (if "Todos" is selected)
+
             try {
                 Date expenseDate = dateFormat.parse(expense.getFecha());
                 if (selectedTimeOption.equals(getString(R.string.time_today))) {
