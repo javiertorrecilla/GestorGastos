@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
             String categoryInSpanish = categoryMap.get(expense.getCategoria());
             boolean matchesCategory = selectedCategory.equals(getString(R.string.all_categories)) ||
+             expense.getCategoria().equalsIgnoreCase(selectedCategory)||
                     (categoryInSpanish != null && categoryInSpanish.equalsIgnoreCase(selectedCategory));
 
 
